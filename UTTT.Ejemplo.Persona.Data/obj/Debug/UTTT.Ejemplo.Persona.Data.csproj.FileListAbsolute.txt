@@ -17,7 +17,6 @@ C:\Users\User\Desktop\UTTT\Manuales\Manual\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Per
 C:\Users\User\Desktop\UTTT\Manuales\Manual\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\obj\Debug\UTTT.Ejemplo.Persona.Data.pdb
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\bin\Debug\UTTT.Ejemplo.Persona.Data.dll
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\bin\Debug\UTTT.Ejemplo.Persona.Data.pdb
-C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\obj\Debug\UTTT.Ejemplo.Persona.Data.csprojAssemblyReference.cache
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\obj\Debug\UTTT.Ejemplo.Persona.Data.csproj.CoreCompileInputs.cache
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\obj\Debug\UTTT.Ejemplo.Persona.Data.dll
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Data\obj\Debug\UTTT.Ejemplo.Persona.Data.pdb

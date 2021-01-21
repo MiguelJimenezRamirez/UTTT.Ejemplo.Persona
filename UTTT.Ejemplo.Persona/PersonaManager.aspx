@@ -41,7 +41,7 @@
         
             Clave Unica:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 
             <asp:TextBox ID="txtClaveUnica" runat="server" 
-                Width="249px" ViewStateMode="Disabled"></asp:TextBox>
+                 maxlength="3" Width="249px" ViewStateMode="Disabled" oninput="maximo(this);" required onkeypress="return SoloNumeros(event)"></asp:TextBox>
         
         </div>
         <div>
@@ -49,13 +49,13 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         
             Nombre:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:TextBox 
-                ID="txtNombre" runat="server" Width="249px" ViewStateMode="Disabled"></asp:TextBox>
+                maxlength="15" ID="txtNombre" oninput="maximoNom(this);" onkeypress="return SoloLetras(event)" runat="server" Width="249px" ViewStateMode="Disabled" required></asp:TextBox>
         
         </div>
         <div> 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
             A Paterno:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox 
-                ID="txtAPaterno" runat="server" Width="249px" ViewStateMode="Disabled"></asp:TextBox>
+                maxlength="15" ID="txtAPaterno" oninput="maximoNom(this);" onkeypress="return SoloLetras(event)" runat="server" Width="249px" ViewStateMode="Disabled" required></asp:TextBox>
         </div>
         <div>
         
@@ -63,10 +63,14 @@
         
             A Materno:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
             <asp:TextBox ID="txtAMaterno" runat="server" Width="248px" 
-                ViewStateMode="Disabled"></asp:TextBox>
+               maxlength="15" oninput="maximoNom(this);" ViewStateMode="Disabled"></asp:TextBox>
         
         </div>
-    <div> 
+    <div style="margin-left: 280px"> 
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<asp:Calendar required oninput="calendar(this);" ID="dteCalendar" runat="server"></asp:Calendar>
+		Numero de Hermanos<asp:TextBox ID="txtNumeroHermanos"  oninput="maximoHer(this);" maxlength="2" onkeypress="return SoloNumeros(event)" required runat="server" style="margin-left: 4px" Width="250px"></asp:TextBox>
     
     </div>
     <div>
@@ -81,5 +85,55 @@
     
     </div>
     </form>
+    <script>
+        function calendar(e) {
+            console.log(e.value.day);
+        }
+        function SoloNumeros(evt) {
+            if (window.event) {
+                keynum = evt.keyCode;
+            } else {
+                keynum = evt.which;
+            }
+            if ((keynum > 47 && keynum < 58 || keynum == 8 || keynum == 13)) {
+                return true;
+            }else {
+                alert("ingresa solo numeros");
+                return false;
+            }
+		}
+        function SoloLetras(e) {
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toString();
+            letras = "qwertyuiopñlkjhgfdsamnbvcxzQWERTYUIOPÑLKJHGFDSAZXCVBNMáéíóúÁÉÍÓÚ"
+            especiales = [8, 13];
+            tecla_especial = false
+            for (var i in especiales) {
+                if (key == especiales[i]) {
+                    tecla_especial = true;
+                    break;
+                }
+            }
+            if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+                alert("Ingresa solo letras");
+                return false;
+            }
+        }
+        function maximo(obj) {
+            if (obj.value.length > obj.maxlength) {
+                obj.value = obj.value.slice(0, obj.maxlength);
+            }
+        }
+		function maximoNom(obj) {
+			if (obj.value.length > obj.maxlength ) {
+				obj.value = obj.value.slice(0, obj.maxlength);
+			}
+        }
+		function maximoHer(obj) {
+			if (obj.value.length > obj.maxlength) {
+				obj.value = obj.value.slice(0, obj.maxlength);
+			}
+		}
+	</script>
 </body>
 </html>
