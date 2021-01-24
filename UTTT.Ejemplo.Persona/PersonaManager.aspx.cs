@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -74,6 +75,9 @@ namespace UTTT.Ejemplo.Persona
                         DateTime tiempo = new DateTime(DateTime.Now.Year, DateTime.Now.Month,DateTime.Now.Day);
                         this.dteCalendar.TodaysDate = tiempo;
                         this.dteCalendar.SelectedDate = tiempo;
+                        txtDia.Text = this.dteCalendar.SelectedDate.Day.ToString();
+                        txtMes.Text = this.dteCalendar.SelectedDate.Month.ToString();
+                        txtAnio.Text = this.dteCalendar.SelectedDate.Year.ToString();
                     }
                     else
                     {
@@ -89,6 +93,12 @@ namespace UTTT.Ejemplo.Persona
                             this.dteCalendar.TodaysDate = (DateTime)fechaNacimiento;
                             this.dteCalendar.SelectedDate = (DateTime)fechaNacimiento;
                         }
+                        txtDia.Text = this.dteCalendar.SelectedDate.Day.ToString();
+                        txtMes.Text = this.dteCalendar.SelectedDate.Month.ToString();
+                        txtAnio.Text = this.dteCalendar.SelectedDate.Year.ToString();
+                        this.txtCorreoElectronico.Text = this.baseEntity.strCorreoElectronico;
+                        this.txtCodigoPostal.Text = this.baseEntity.intCodigoPostal.ToString();
+                        this.txtRFC.Text = this.baseEntity.strRFC;
                     }                
                 }
 
@@ -116,10 +126,25 @@ namespace UTTT.Ejemplo.Persona
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
                     //El calendar
-                    DateTime fechaNacimiento = this.dteCalendar.SelectedDate.Date;
-                    persona.dtFechaDNaci = fechaNacimiento;
+                    //DateTime fechaNacimiento = this.dteCalendar.SelectedDate.Date;
+                    //persona.dtFechaDNaci = fechaNacimiento;
+
+                    //string dateString = ;
+                    //string format = "dd/MM/yyyy";
+                    //DateTime dateTime = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture);
+
+                    DateTime dateTime = Convert.ToDateTime(txtMes.Text + "/" + txtDia.Text + "/" + txtAnio.Text, CultureInfo.InvariantCulture);
+                    persona.dtFechaDNaci = dateTime;
+
+
                     //agregar hermanos
                     persona.intNumHermano = int.Parse(this.txtNumeroHermanos.Text);
+                    //Correo Electronico
+                    persona.strCorreoElectronico = this.txtCorreoElectronico.Text.Trim();
+                    //Codigo postal
+                    persona.intCodigoPostal = int.Parse(this.txtCodigoPostal.Text);
+                    //RFC
+                    persona.strRFC = this.txtRFC.Text.Trim();
 
                     dcGuardar.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().InsertOnSubmit(persona);
                     dcGuardar.SubmitChanges();
@@ -137,11 +162,23 @@ namespace UTTT.Ejemplo.Persona
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
                     //El calendar
-                    DateTime fechaNacimiento = this.dteCalendar.SelectedDate.Date;
-                    persona.dtFechaDNaci = fechaNacimiento;
+                    //string fecha = txtDia.Text+"/"+txtMes.Text+"/"+txtAnio;
+                    //DateTime dt = DateTime.Parse(fecha);
+
+                    //DateTime fechaNacimiento = this.dteCalendar.SelectedDate.Date;
+                    //persona.dtFechaDNaci = dt;
+
+                    DateTime dateTime = Convert.ToDateTime(txtMes.Text + "/" + txtDia.Text + "/" + txtAnio.Text, CultureInfo.InvariantCulture);
+                    persona.dtFechaDNaci = dateTime;
+
                     //agregar hermanos
                     persona.intNumHermano =  int.Parse(this.txtNumeroHermanos.Text);
-
+                    //Correo Electronico
+                    persona.strCorreoElectronico = this.txtCorreoElectronico.Text.Trim();
+                    //Codigo postal
+                    persona.intCodigoPostal = int.Parse(this.txtCodigoPostal.Text);
+                    //RFC
+                    persona.strRFC = this.txtRFC.Text.Trim();
                     dcGuardar.SubmitChanges();
                     this.showMessage("El registro se edito correctamente.");
                     this.Response.Redirect("~/PersonaPrincipal.aspx", false);

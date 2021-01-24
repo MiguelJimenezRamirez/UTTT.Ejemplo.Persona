@@ -28,6 +28,9 @@
       <Column Name="idCatSexo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="dtFechaDNaci" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="intNumHermano" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="strCorreoElectronico" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="intCodigoPostal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="strRFC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="Persona_Direccion" Member="Direccion" ThisKey="id" OtherKey="idPersona" Type="Direccion" />
       <Association Name="CatSexo_Persona" Member="CatSexo" ThisKey="idCatSexo" OtherKey="id" Type="CatSexo" IsForeignKey="true" />
     </Type>
