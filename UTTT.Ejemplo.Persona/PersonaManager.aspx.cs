@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -71,7 +72,7 @@ namespace UTTT.Ejemplo.Persona
                     this.ddlSexo.AutoPostBack = true;
                     if (this.idPersona == 0)
                     {
-                        this.lblAccion.Text = "Agregar";
+                        lblAccion.Text = "Agregar";
                         DateTime tiempo = new DateTime(DateTime.Now.Year, DateTime.Now.Month,DateTime.Now.Day);
                         this.dteCalendar.TodaysDate = tiempo;
                         this.dteCalendar.SelectedDate = tiempo;
@@ -99,6 +100,9 @@ namespace UTTT.Ejemplo.Persona
                         this.txtCorreoElectronico.Text = this.baseEntity.strCorreoElectronico;
                         this.txtCodigoPostal.Text = this.baseEntity.intCodigoPostal.ToString();
                         this.txtRFC.Text = this.baseEntity.strRFC;
+
+                        //Funcionalidad para numeros de hermanos
+                       
                     }                
                 }
 
@@ -145,6 +149,30 @@ namespace UTTT.Ejemplo.Persona
                     persona.intCodigoPostal = int.Parse(this.txtCodigoPostal.Text);
                     //RFC
                     persona.strRFC = this.txtRFC.Text.Trim();
+                    //Funcionalidad para hermanos
+                    persona.intNumHermano = !this.txtNumeroHermanos.Text.Equals(string.Empty) ?
+                        int.Parse(this.txtNumeroHermanos.Text) : 0;
+                    String mensaje = string.Empty;
+                    if (!this.validacion(persona, ref mensaje, txtDia.Text,txtMes.Text,txtAnio.Text)) {
+                        this.lblMensaje.Text = mensaje;
+                        this.lblMensaje.Visible = true;
+                        return;
+
+                    }
+                    if (!this.validacionSQL( ref mensaje))
+                    {
+                        this.lblMensaje.Text = mensaje;
+                        this.lblMensaje.Visible = true;
+                        return;
+
+                    }
+                    if (!this.validacionHTML( ref mensaje))
+                    {
+                        this.lblMensaje.Text = mensaje;
+                        this.lblMensaje.Visible = true;
+                        return;
+
+                    }
 
                     dcGuardar.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().InsertOnSubmit(persona);
                     dcGuardar.SubmitChanges();
@@ -223,7 +251,230 @@ namespace UTTT.Ejemplo.Persona
         }
 
         #endregion
+        public bool validacion(UTTT.Ejemplo.Linq.Data.Entity.Persona _persona, ref String _mensaje, string dia, string mes, string anio) {
+            if (_persona.idCatSexo.Equals(-1)) {
+                _mensaje = "seleccione el sexo";
+                return false;
+            }
+            if (_persona.strClaveUnica.Equals(String.Empty)) {
+                _mensaje = "clave es obligatorio";
+            }
+            if (_persona.strClaveUnica.Length != 3) {
+                _mensaje = "clave unica no valida";
+                return false;
+            }
+            if (_persona.strNombre.Length > 50) {
+                _mensaje = "Solo se permienten 50 caracteres en Nombre";
+                return false;
+            }
+			if (_persona.strNombre.Equals(String.Empty)) {
+                _mensaje = "Nombre esta vacio";
+                return false;
+            }
+            if (_persona.strAPaterno.Equals(String.Empty)) {
+                _mensaje = "Apellido paterno esta Vacio";
+                return false;
+            }
+            if (_persona.strAPaterno.Length>50) {
+                _mensaje = "Solo se permienten 50 caracteres en Apellido Paterno";
+                return false;
+            }
+            if (_persona.strAMaterno.Length>50) {
+                _mensaje = "Solo se permienten 50 caracteres en Apellido Materno";
+                return false;
+            }
+            int Validador = (int.Parse(txtDia.Text)*24*60*60)+(int.Parse(txtMes.Text) * 30 * 24 * 60 * 60)+((2021-int.Parse(txtAnio.Text))*365*24*60*60);
+            int mayor = 568024668;
+            if (Validador < mayor) {
+                _mensaje = "Eres menor de edad";
+                return false;
+            }
+            if (_persona.intNumHermano > 20 ) {
+                _mensaje = "Numero de hermanos no valido";
+                return false;
+            }
+            if (_persona.intNumHermano<0) {
+                _mensaje = "Numero de hermanos no valido";
+                return false;
+            }
+            if (_persona.intNumHermano.ToString() == "" ) {
+                _mensaje = "El campo Numero de hermanos es requerido ";
+                return false;
+            }
+			if (_persona.strCorreoElectronico.Equals(String.Empty) ) {
+                _mensaje = "El campo Correo Electronico es requerido ";
+                return false;
+            }
+			//Validar Email
+			Regex patternCorreo = new Regex("w+([-+.']w+)*@w+([-.]w+)*.w+([-.]w+)*");
+            bool respuesta = patternCorreo.IsMatch(_persona.strCorreoElectronico.ToString()); 
+            if (respuesta)
+			{
+                _mensaje = "Formato no admitido para Email";
+                return false;
+            }
 
+			if (_persona.strRFC.Equals(String.Empty))
+			{
+				_mensaje = "El campo RFC es requerido ";
+				return false;
+			}
+
+			//Validar RFC
+			Regex patternRFC = new Regex("^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Zd]{3}))?$");
+            bool respues = patternRFC.IsMatch(_persona.strRFC.ToString());
+            if (respues)
+			{
+                _mensaje = "Formato no admitido para RFC";
+                return false;
+            }
+			//
+			if (_persona.intCodigoPostal.ToString().Equals(String.Empty))
+            {
+                _mensaje = "El campo RFC es requerido ";
+                return false;
+            }
+            //Regex patternCodigoP = new Regex("^[0-5][1-9]{3}[0-9]$");
+            //bool menCP = ;
+            //if (patternCodigoP.IsMatch(_persona.intCodigoPostal.ToString()))
+            //{
+            //    _mensaje = "Formato no admitido para Codigo Postal";
+            //    return false;
+            //}
+
+            return true;
+        }
+        public bool validacionHTML( ref String _mensaje) {
+            CtrlvalidaInyeccion valida = new CtrlvalidaInyeccion();
+            string mensaheFuncion = string.Empty;
+            if (valida.htmlInyectionValida(this.txtClaveUnica.Text.Trim(), ref mensaheFuncion, "Clave Unica", ref this.txtClaveUnica))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtNombre.Text.Trim(), ref mensaheFuncion, "Nombre", ref this.txtNombre))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtAPaterno.Text.Trim(), ref mensaheFuncion, "A paterno", ref this.txtAPaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtAMaterno.Text.Trim(), ref mensaheFuncion, "A Materno", ref this.txtAMaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtAMaterno.Text.Trim(), ref mensaheFuncion, "A Materno", ref this.txtAMaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtDia.Text.Trim(), ref mensaheFuncion, "Dia", ref this.txtDia))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtMes.Text.Trim(), ref mensaheFuncion, "Mes", ref this.txtMes))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtAnio.Text.Trim(), ref mensaheFuncion, "Año", ref this.txtAnio))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtNumeroHermanos.Text.Trim(), ref mensaheFuncion, "Numero Hermanos", ref this.txtNumeroHermanos))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtCorreoElectronico.Text.Trim(), ref mensaheFuncion, "Correo Electronico", ref this.txtCorreoElectronico))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtRFC.Text.Trim(), ref mensaheFuncion, "RFC", ref this.txtRFC))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.htmlInyectionValida(this.txtCodigoPostal.Text.Trim(), ref mensaheFuncion, "Codigo Posgal", ref this.txtCodigoPostal))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            return true;
+        }
+        public bool validacionSQL( ref String _mensaje) 
+        {
+            CtrlvalidaInyeccion valida = new CtrlvalidaInyeccion();
+            string mensaheFuncion = string.Empty;
+            if (valida.SQLInyectionValida(this.txtClaveUnica.Text.Trim(), ref mensaheFuncion, "Clave Unica", ref this.txtClaveUnica))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtNombre.Text.Trim(), ref mensaheFuncion, "Nombre", ref this.txtNombre)) 
+                {
+                _mensaje = mensaheFuncion;
+                return false;
+                }
+            if (valida.SQLInyectionValida(this.txtAPaterno.Text.Trim(), ref mensaheFuncion, "Apellido paterno", ref this.txtAPaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtAMaterno.Text.Trim(), ref mensaheFuncion, "Apellido Materno", ref this.txtAMaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtAMaterno.Text.Trim(), ref mensaheFuncion, "Apellido Materno", ref this.txtAMaterno))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtDia.Text.Trim(), ref mensaheFuncion, "Dia", ref this.txtDia))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtMes.Text.Trim(), ref mensaheFuncion, "Mes", ref this.txtMes))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtAnio.Text.Trim(), ref mensaheFuncion, "Año", ref this.txtAnio))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtNumeroHermanos.Text.Trim(), ref mensaheFuncion, "Hermanos", ref this.txtNumeroHermanos))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtCorreoElectronico.Text.Trim(), ref mensaheFuncion, "Correo", ref this.txtCorreoElectronico))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtRFC.Text.Trim(), ref mensaheFuncion, "RFC", ref this.txtRFC))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            if (valida.SQLInyectionValida(this.txtCodigoPostal.Text.Trim(), ref mensaheFuncion, "Codigo postal", ref this.txtCodigoPostal))
+            {
+                _mensaje = mensaheFuncion;
+                return false;
+            }
+            return true;
+        }
         #region Metodos
 
         public void setItem(ref DropDownList _control, String _value)

@@ -23,3 +23,12 @@ C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Con
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.csproj.CopyComplete
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.dll
 C:\Users\niki_\Desktop\web\Trabajo\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.pdb
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\bin\Debug\UTTT.Ejemplo.Persona.Control.dll
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\bin\Debug\UTTT.Ejemplo.Persona.Control.pdb
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\bin\Debug\UTTT.Ejemplo.Persona.Data.dll
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\bin\Debug\UTTT.Ejemplo.Persona.Data.pdb
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.csprojAssemblyReference.cache
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.csproj.CoreCompileInputs.cache
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.csproj.CopyComplete
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.dll
+D:\UTTT.Ejemplo.Persona\UTTT.Ejemplo.Persona.Control\obj\Debug\UTTT.Ejemplo.Persona.Control.pdb
