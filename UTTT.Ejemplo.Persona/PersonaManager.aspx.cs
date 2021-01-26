@@ -14,7 +14,8 @@ using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
 using System.Text.RegularExpressions;
-
+using System.Net.Mail;
+using System.Net;
 #endregion
 
 namespace UTTT.Ejemplo.Persona
@@ -111,6 +112,7 @@ namespace UTTT.Ejemplo.Persona
             {
                 this.showMessage("Ha ocurrido un problema al cargar la página");
                 this.Response.Redirect("~/PersonaPrincipal.aspx", false);
+                error(_e.ToString());
             }
 
         }
@@ -215,6 +217,7 @@ namespace UTTT.Ejemplo.Persona
             catch (Exception _e)
             {
                 this.showMessageException(_e.Message);
+                error(_e.ToString());
             }
         }
 
@@ -227,6 +230,7 @@ namespace UTTT.Ejemplo.Persona
             catch (Exception _e)
             {
                 this.showMessage("Ha ocurrido un error inesperado");
+                error(_e.ToString());
             }
         }
 
@@ -244,9 +248,10 @@ namespace UTTT.Ejemplo.Persona
                 this.ddlSexo.DataSource = lista;
                 this.ddlSexo.DataBind();
             }
-            catch (Exception)
+            catch (Exception _e)
             {
                 this.showMessage("Ha ocurrido un error inesperado");
+                error(_e.ToString());
             }
         }
 
@@ -475,6 +480,24 @@ namespace UTTT.Ejemplo.Persona
             }
             return true;
         }
+        public void error(string error)
+        {
+            string body = error;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("18301044@uttt.edu.mx", "MJR9416M");
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("18301044@uttt.edu.mx", "Error en el servidor Ejemplo Estudiante");
+            mail.To.Add(new MailAddress("18301044@uttt.edu.mx"));
+            mail.Subject = ("Error");
+            mail.Body = body;
+
+            smtp.Send(mail);
+        }
+
+
         #region Metodos
 
         public void setItem(ref DropDownList _control, String _value)

@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
+using System.Net.Mail;
+using System.Net;
 
 #endregion
 
@@ -62,6 +64,7 @@ namespace UTTT.Ejemplo.Persona
             {
                 this.showMessage("Ha ocurrido un problema al cargar la página");
                 this.Response.Redirect("~/PersonaPrincipal.aspx", false);
+                error(_e.ToString());
             }
         }
 
@@ -81,6 +84,7 @@ namespace UTTT.Ejemplo.Persona
             {
                 this.showMessage("Ha ocurrido un problema al cargar la página");
                 this.Response.Redirect("~/PersonaPrincipal.aspx", false);
+                error(_e.ToString());
             }
         }
 
@@ -103,6 +107,7 @@ namespace UTTT.Ejemplo.Persona
             catch (Exception _e)
             {
                 this.showMessage("Ha ocurrido un problema al seleccionar");
+                error(_e.ToString());
             }
         }
 
@@ -122,6 +127,7 @@ namespace UTTT.Ejemplo.Persona
             catch (Exception _e)
             {
                 this.showMessage("Ha ocurrido un problema al agregar");
+                error(_e.ToString());
             }
         }
 
@@ -129,7 +135,7 @@ namespace UTTT.Ejemplo.Persona
         #endregion
 
         #region Metodos
-
+        
         private void editar(int _direccion)
         {
             try
@@ -146,6 +152,7 @@ namespace UTTT.Ejemplo.Persona
             }
             catch (Exception _e)
             {
+                error(_e.ToString());
                 throw _e;
             }
         }
@@ -164,11 +171,26 @@ namespace UTTT.Ejemplo.Persona
             }
             catch (Exception _e)
             {
+                error(_e.ToString());
                 throw _e;
             }
         }
+        public void error(string error)
+        {
+            string body = error;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("18301044@uttt.edu.mx", "MJR9416M");
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("18301044@uttt.edu.mx", "Error en el servidor Ejemplo Estudiante");
+            mail.To.Add(new MailAddress("18301044@uttt.edu.mx"));
+            mail.Subject = ("Error");
+            mail.Body = body;
+        }
 
-       
+
         #endregion
     }
 }
